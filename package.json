@@ -1,0 +1,22 @@
+{
+    "name": "usite",
+    "version": "1.0.0",
+    "description": "Tiny static site generator",
+    "license": "MIT",
+    "author": "Tomas Grubliauskas",
+    "repository": "git://github.com/v3nom/uSite.git",
+    "bugs": { "url": "http://github.com/v3nom/uSite/issues" },
+    "main": "usite.js",
+    "bin": {
+        "uSite": "./index.js"
+    },
+    "dependencies": {
+        "fs-extra": "^2.0.0",
+        "glob": "^7.1.1",
+        "highlight.js": "^9.9.0",
+        "js-yaml": "^3.7.0",
+        "marked": "^0.3.6",
+        "nunjucks": "^3.0.0",
+        "speakingurl": "^11.0.0"
+    }
+}

@@ -1,0 +1,8 @@
+{% extends "template/index.njk" %}
+
+{% block content %}
+<div class="post">
+    <h1>{{meta.title}}</h1>
+    <div>{{content | safe}}</div>
+</div>
+{% endblock %}

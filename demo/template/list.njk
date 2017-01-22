@@ -1,0 +1,10 @@
+{% extends "template/index.njk" %}
+
+{% block content %}
+    {% for post in entries%}
+        <div class="post">
+            <h1><a href="{{post.relativeUrl}}">{{post.meta.title}}</a></h1>
+            <div>{{post.excerpt | safe}}</div>
+        </div>
+    {% endfor %}
+{% endblock %}
