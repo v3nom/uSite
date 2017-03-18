@@ -13,7 +13,7 @@ var posts = uSite.loadContent('content/post/*', (entry) => {
     entry.excerpt = entry.parseMarkdown(contentParts[0]);
 
     entry.relativeUrl = 'post/' + entry.slug;
-});
+}).sort((a, b) => { return b.meta.date - a.meta.date; });
 
 posts.emit('template/single.njk', 'www/post/{slug}');
 

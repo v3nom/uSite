@@ -111,6 +111,13 @@ class ContentArray {
         });
         return new ContentGroup(groups);
     }
+
+    sort(sortFn) {
+        this.entries.sort((a, b) => {
+            return sortFn(a, b);
+        });
+        return this;
+    }
 }
 
 function evaluateParametrisedPath(s, entry) {
