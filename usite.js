@@ -15,7 +15,7 @@ marked.setOptions({
 
 var uSite = {};
 uSite.global = {};
-uSite.pwd = '';
+uSite.cwd = process.cwd();
 
 class ContentEntry {
     constructor(basePath) {
@@ -44,8 +44,16 @@ class ContentEntry {
     }
 
     emit(templ, dest) {
-        var w = nunjucks.render(templ, this);
+        var w;
+        if (typeof templ == 'string') {
+            nunjucks.configure(uSite.cwd);
+            w = nunjucks.render(templ, this);
+        } else {
+            w = templ(this);
+        }
+
         var d = evaluateParametrisedPath(dest, this);
+        d = getLocalPath(d);
         fse.mkdirsSync(d);
         fs.writeFileSync(path.join(d, 'index.html'), w);
     }
@@ -65,8 +73,15 @@ class ContentGroup {
                 entries: entries,
                 global: uSite.global,
             };
-            var w = nunjucks.render(templ, context);
+            var w;
+            if (typeof templ == 'string') {
+                nunjucks.configure(uSite.cwd);
+                w = nunjucks.render(templ, context);
+            } else {
+                w = templ(context);
+            }
             var d = evaluateParametrisedPath(dest, context);
+            d = getLocalPath(d);
             var ext = path.extname(d);
             if (ext) {
                 fse.mkdirsSync(path.dirname(d));
@@ -132,7 +147,7 @@ function evaluateParametrisedPath(s, entry) {
 }
 
 function getLocalPath(p) {
-    return path.join(uSite.pwd, p);
+    return path.join(uSite.cwd, p);
 }
 
 function getSuggestedType(p, content) {
@@ -195,9 +210,9 @@ uSite.parseOptions = (content) => {
 }
 
 uSite.loadContent = (pattern, prepareFn) => {
-    var files = glob.sync(pattern);
+    var files = glob.sync(pattern, { cwd: uSite.cwd });
     var entries = files.map((file) => {
-        var entry = new ContentEntry(file);
+        var entry = new ContentEntry(getLocalPath(file));
         prepareFn(entry);
         return entry;
     });
@@ -205,7 +220,7 @@ uSite.loadContent = (pattern, prepareFn) => {
 }
 
 uSite.copy = (t, d) => {
-    fse.copySync(t, d);
+    fse.copySync(getLocalPath(t), getLocalPath(d));
 }
 
 module.exports = uSite;

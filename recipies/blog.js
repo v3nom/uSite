@@ -1,3 +1,5 @@
+var RSS = require('rss20');
+
 uSite.global = uSite.loadOptions('website.json');
 
 var posts = uSite.loadContent('content/post/*', (entry) => {
@@ -23,8 +25,28 @@ var postGroup = posts.group((post, index) => {
 
 postGroup.emit('template/list.njk', 'www/posts/{groupKey}');
 
-postGroup.filter((groupKey) => {
+var firstPage = postGroup.filter((groupKey) => {
     return groupKey == 0;
-}).emit('template/list.njk', 'www/index.html');
+});
+firstPage.emit('template/list.njk', 'www/index.html');
+
+firstPage.emit((groupContext) => {
+    var feed = new RSS.Feed();
+    feed.title = groupContext.global.title;
+    feed.description = groupContext.global.description;
+    feed.link = groupContext.global.url || '';
+    feed.pubDate = (new Date()).toGMTString();
+
+    groupContext.entries.forEach((entry) => {
+        var item = new RSS.Item();
+        item.title = entry.meta.title;
+        item.description = entry.excerpt;
+        item.link = feed.link + entry.relativeUrl;
+        item.pubDate = (new Date(entry.meta.date)).toGMTString();
+        feed.addItem(item);
+    });
+
+    return feed.getXML();
+}, 'www/rss.xml');
 
 uSite.copy('template/res', 'www');
