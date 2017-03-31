@@ -55,6 +55,12 @@ firstPage.emit((groupContext) => {
 // Generate sitemap
 posts.group(() => 0).emit((groupContext) => {
     var sitemapContent = '';
+    if (groupContext.global.url) {
+        sitemapContent += groupContext.global.url + '\n';
+    }
+    Object.keys(postGroup.allGroups).forEach((k) => {
+        sitemapContent += (groupContext.global.url || '') + 'posts/' + k + '\n';
+    });
     groupContext.entries.forEach((entry) => {
         sitemapContent += (groupContext.global.url || '') + entry.relativeUrl + '\n';
     });
