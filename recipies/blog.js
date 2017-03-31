@@ -30,6 +30,9 @@ var firstPage = postGroup.filter((groupKey) => {
 });
 firstPage.emit('template/list.njk', 'www/index.html');
 
+uSite.copy('template/res', 'www');
+
+// Generate RSS feed
 firstPage.emit((groupContext) => {
     var feed = new RSS.Feed();
     feed.title = groupContext.global.title;
@@ -49,4 +52,11 @@ firstPage.emit((groupContext) => {
     return feed.getXML();
 }, 'www/rss.xml');
 
-uSite.copy('template/res', 'www');
+// Generate sitemap
+posts.group(() => 0).emit((groupContext) => {
+    var sitemapContent = '';
+    groupContext.entries.forEach((entry) => {
+        sitemapContent += (groupContext.global.url || '') + entry.relativeUrl + '\n';
+    });
+    return sitemapContent;
+}, 'www/sitemap.txt');
