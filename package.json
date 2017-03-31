@@ -1,6 +1,6 @@
 {
   "name": "usite",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Tiny static site generator",
   "license": "MIT",
   "author": "Tomas Grubliauskas",
