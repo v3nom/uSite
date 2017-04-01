@@ -7,7 +7,7 @@ var posts = uSite.loadContent('content/post/*', (entry) => {
     var fileParts = file.split('+++', 2);
 
     entry.meta = entry.parseOptions(fileParts[0]);
-    entry.slug = entry.generateSlug(entry.meta.title);
+    entry.slug = entry.meta.slug || entry.generateSlug(entry.meta.title);
 
     var content = fileParts[1];
     var contentParts = content.split('<!-- excerpt -->')
