@@ -4,12 +4,12 @@ uSite.global = uSite.loadOptions('website.json');
 
 var posts = uSite.loadContent('content/post/*', (entry) => {
     var file = entry.loadString();
-    var fileParts = file.split('+++', 2);
+    var fileParts = file.split('+++', 1);
 
     entry.meta = entry.parseOptions(fileParts[0]);
     entry.slug = entry.meta.slug || entry.generateSlug(entry.meta.title);
 
-    var content = fileParts[1];
+    var content = file.replace(fileParts[0]+'+++', '');
     var contentParts = content.split('<!-- excerpt -->')
     entry.content = entry.parseMarkdown(content);
     entry.excerpt = entry.parseMarkdown(contentParts[0]);

@@ -6,3 +6,5 @@ Second post
 <!-- excerpt -->
 
 Rest of the post
++++
+end of the post
