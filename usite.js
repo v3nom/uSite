@@ -55,7 +55,12 @@ class ContentEntry {
         var d = evaluateParametrisedPath(dest, this);
         d = getLocalPath(d);
         fse.mkdirsSync(d);
-        fs.writeFileSync(path.join(d, 'index.html'), w);
+        d = path.join(d, 'index.html');
+
+        if (fs.existsSync(d) && compareFiles(fs.readFileSync(d, 'utf8'), w)) {
+            return;
+        }
+        fs.writeFileSync(d, w);
     }
 }
 
@@ -83,13 +88,16 @@ class ContentGroup {
             var d = evaluateParametrisedPath(dest, context);
             d = getLocalPath(d);
             var ext = path.extname(d);
-            if (ext) {
-                fse.mkdirsSync(path.dirname(d));
-                fs.writeFileSync(d, w)
-            } else {
-                fse.mkdirsSync(d);
-                fs.writeFileSync(path.join(d, 'index.html'), w)
+
+            if (!ext) {
+                d = path.join(d, 'index.html');
             }
+            fse.mkdirsSync(path.dirname(d));
+
+            if (fs.existsSync(d) && compareFiles(fs.readFileSync(d, 'utf8'), w)) {
+                return;
+            }
+            fs.writeFileSync(d, w)
         });
     }
 
@@ -197,6 +205,10 @@ function loadFile(p) {
         throw 'File doest not exist: ' + p;
     }
     return fs.readFileSync(p).toString();
+}
+
+function compareFiles(fileA, fileB) {
+    return fileA === fileB;
 }
 
 uSite.loadOptions = (path) => {

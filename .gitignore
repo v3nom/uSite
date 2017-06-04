@@ -38,3 +38,4 @@ jspm_packages
 demo/www
 .DS_Store
 test.js
+.vscode
