@@ -20,7 +20,7 @@ var posts = uSite.loadContent('content/post/*', (entry) => {
 posts.emit('template/single.njk', 'www/post/{slug}');
 
 var postGroup = posts.group((post, index) => {
-    return Math.round(index / 10);
+    return Math.floor(index / (uSite.global.postsPerPage || 10));
 });
 
 postGroup.emit('template/list.njk', 'www/posts/{groupKey}');
@@ -28,9 +28,9 @@ postGroup.emit('template/list.njk', 'www/posts/{groupKey}');
 var firstPage = postGroup.filter((groupKey) => {
     return groupKey == 0;
 });
-firstPage.emit('template/list.njk', 'www/index.html');
 
 uSite.copy('template/res', 'www');
+uSite.copy('www/posts/0/index.html', 'www/index.html');
 
 // Generate RSS feed
 firstPage.emit((groupContext) => {

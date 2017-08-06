@@ -71,13 +71,23 @@ class ContentGroup {
 
     emit(templ, dest) {
         var allGroups = this.allGroups;
-        Object.keys(this.allGroups).forEach((groupKey) => {
-            var entries = allGroups[groupKey];
-            var context = {
+        var lastKey = null;
+        var lastContext = null;
+        var groupContexts = Object.keys(this.allGroups).map((groupKey) => {
+            if (lastContext) {
+                lastContext.nextGroup = groupKey;
+            }
+            lastContext = {
                 groupKey: groupKey,
-                entries: entries,
+                entries: allGroups[groupKey],
                 global: uSite.global,
+                previousGroup: lastKey,
+                nextGroup: null,
             };
+            lastKey = groupKey;
+            return lastContext;
+        });
+        groupContexts.forEach((context)=>{
             var w;
             if (typeof templ == 'string') {
                 nunjucks.configure(uSite.cwd);

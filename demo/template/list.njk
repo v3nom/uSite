@@ -3,8 +3,16 @@
 {% block content %}
     {% for post in entries%}
         <div class="post">
-            <h1><a href="{{post.relativeUrl}}">{{post.meta.title}}</a></h1>
+            <h1><a href="/{{post.relativeUrl}}">{{post.meta.title}}</a></h1>
             <div>{{post.excerpt | safe}}</div>
         </div>
     {% endfor %}
+    <div>
+    {% if previousGroup %}
+        <div><a href="/posts/{{previousGroup}}">Newer posts</a></div>
+    {% endif %}
+    {% if nextGroup %}
+        <div><a href="/posts/{{nextGroup}}">Older posts</a></div>
+    {% endif %}
+    </div>
 {% endblock %}
