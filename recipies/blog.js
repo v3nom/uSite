@@ -29,6 +29,7 @@ var firstPage = postGroup.filter((groupKey) => {
     return groupKey == 0;
 });
 
+uSite.copy('content/images', 'www/images');
 uSite.copy('template/res', 'www');
 uSite.copy('www/posts/0/index.html', 'www/index.html');
 
