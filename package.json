@@ -20,6 +20,7 @@
     "marked": "0.4.0",
     "nunjucks": "3.1.3",
     "rss20": "1.0.2",
-    "speakingurl": "14.0.1"
+    "speakingurl": "14.0.1",
+    "usitedemo": "^1.0.0"
   }
 }
