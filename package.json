@@ -12,6 +12,9 @@
   "bin": {
     "uSite": "./index.js"
   },
+  "scripts": {
+    "test": "ts-node node_modules/jasmine/bin/jasmine \"src/**/*.spec.ts\""
+  },
   "dependencies": {
     "fs-extra": "7.0.0",
     "glob": "7.1.2",
@@ -22,5 +25,12 @@
     "rss20": "1.0.2",
     "speakingurl": "14.0.1",
     "usitedemo": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/jasmine": "^2.8.8",
+    "@types/node": "^10.9.4",
+    "jasmine": "^3.2.0",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.0.3"
   }
 }

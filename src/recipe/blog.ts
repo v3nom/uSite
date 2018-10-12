@@ -1,26 +1,34 @@
-var RSS = require('rss20');
+import RSS from 'rss20';
+import uSite from '../usite';
+import { PostItemFactory } from "../content/PostItemFactory";
 
-uSite.global = uSite.loadOptions('website.json');
+const blog = new uSite();
+blog.context.global = blog.loadOptions('website.json');
 
-var posts = uSite.loadContent('content/post/*', (entry) => {
-    var file = entry.loadString();
+var posts = blog.loadContent('content/post/*', new PostItemFactory()).map((item) => {
+    item.load();
+
+    const file = item.rawContent;
     var fileParts = file.split('+++', 1);
 
-    entry.meta = entry.parseOptions(fileParts[0]);
-    entry.slug = entry.meta.slug || entry.generateSlug(entry.meta.title);
+    var content = file.replace(fileParts[0] + '+++', '');
+    var contentParts = content.split('<!-- excerpt -->');
+    var meta = blog.utils.parseOptions(fileParts[0]);
+    const slug = meta.slug || blog.utils.generateSlug(meta.title)
 
-    var content = file.replace(fileParts[0]+'+++', '');
-    var contentParts = content.split('<!-- excerpt -->')
-    entry.content = entry.parseMarkdown(content);
-    entry.excerpt = entry.parseMarkdown(contentParts[0]);
-
-    entry.relativeUrl = 'post/' + entry.slug;
+    return {
+        meta: meta,
+        slug: slug,
+        content: blog.utils.parseMarkdown(content),
+        excerpt: blog.utils.parseMarkdown(contentParts[0]),
+        relativeUrl: 'post/' + slug
+    };
 }).sort((a, b) => { return b.meta.date - a.meta.date; });
 
 posts.emit('template/single.njk', 'www/post/{slug}');
 
 var postGroup = posts.group((post, index) => {
-    return Math.floor(index / (uSite.global.postsPerPage || 10));
+    return Math.floor(index / (blog.context.global.postsPerPage || 10));
 });
 
 postGroup.emit('template/list.njk', 'www/posts/{groupKey}');
@@ -29,9 +37,9 @@ var firstPage = postGroup.filter((groupKey) => {
     return groupKey == 0;
 });
 
-uSite.copy('content/images', 'www/images');
-uSite.copy('template/res', 'www');
-uSite.copy('www/posts/0/index.html', 'www/index.html');
+blog.copy('content/images', 'www/images');
+blog.copy('template/res', 'www');
+blog.copy('www/posts/0/index.html', 'www/index.html');
 
 // Generate RSS feed
 firstPage.emit((groupContext) => {
@@ -39,14 +47,14 @@ firstPage.emit((groupContext) => {
     feed.title = groupContext.global.title;
     feed.description = groupContext.global.description;
     feed.link = groupContext.global.url || '';
-    feed.pubDate = (new Date()).toGMTString();
+    feed.pubDate = (new Date()).toUTCString();
 
     groupContext.entries.forEach((entry) => {
         var item = new RSS.Item();
         item.title = entry.meta.title;
         item.description = entry.excerpt;
         item.link = feed.link + entry.relativeUrl;
-        item.pubDate = (new Date(entry.meta.date)).toGMTString();
+        item.pubDate = (new Date(entry.meta.date)).toUTCString();
         feed.addItem(item);
     });
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-uSite = require('./usite');
+var uSite = require('./dist/usite');
 
 var command = process.argv[2];
 
