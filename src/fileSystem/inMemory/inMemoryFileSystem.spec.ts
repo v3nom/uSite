@@ -3,9 +3,14 @@ import { InMemoryFileSystem } from "./inMemoryFileSystem";
 describe("InMemoryFileSystem spec", () => {
     it("should support mkdirs", () => {
         const fs = new InMemoryFileSystem();
+
         fs.mkdirs("./a/b/c/");
         fs.writeFile("./a/b/c/a.txt", "aaa");
         expect(fs.readFile("./a/b/c/a.txt", "utf-8")).toBe("aaa");
+
+        fs.mkdirs("x/z");
+        fs.writeFile("x/z/a.txt", "zzz");
+        expect(fs.readFile("x/z/a.txt", "utf-8")).toBe("zzz");
     });
 
     it("should support copy", () => {

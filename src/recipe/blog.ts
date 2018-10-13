@@ -1,19 +1,16 @@
 import RSS from 'rss20';
 import uSite from '../usite';
-import { PostItemFactory } from "../content/PostItemFactory";
 
 const blog = new uSite();
 blog.context.global = blog.loadOptions('website.json');
 
-var posts = blog.loadContent('content/post/*', new PostItemFactory()).map((item) => {
-    item.load();
-
+var posts = blog.loadContent('content/post/*').map((item) => {
     const file = item.rawContent;
     var fileParts = file.split('+++', 1);
 
     var content = file.replace(fileParts[0] + '+++', '');
     var contentParts = content.split('<!-- excerpt -->');
-    var meta = blog.utils.parseOptions(fileParts[0]);
+    var meta = blog.utils.parseOptions(fileParts[0]) as { title: string, slug: string, date: Date };
     const slug = meta.slug || blog.utils.generateSlug(meta.title)
 
     return {
@@ -23,7 +20,7 @@ var posts = blog.loadContent('content/post/*', new PostItemFactory()).map((item)
         excerpt: blog.utils.parseMarkdown(contentParts[0]),
         relativeUrl: 'post/' + slug
     };
-}).sort((a, b) => { return b.meta.date - a.meta.date; });
+}).sort((a, b) => { return b.meta.date.getTime() - a.meta.date.getTime(); });
 
 posts.emit('template/single.njk', 'www/post/{slug}');
 

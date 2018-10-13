@@ -115,14 +115,12 @@ describe("fsNode test suite", () => {
         expect(b.name).toBe("b");
     });
 
-    it("should throw error on missing path", () => {
+    it("should return null on missing path", () => {
         const root = new FSNode(".");
         const a = new FSNode("a");
 
         root.addChild(a);
 
-        expect(() => {
-            root.resolvePath("./a/b");
-        }).toThrow();
+        expect(root.resolvePath("./a/b")).toBeNull();
     });
 });

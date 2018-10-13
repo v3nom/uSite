@@ -2,61 +2,64 @@ import * as nunjucks from 'nunjucks';
 import * as FileUtils from '../utils/fileUtils';
 import { IContext } from '../context';
 import { ContentItem, TemplateFn } from "./ContentItem";
+import { IContentItemFactory } from "./IContentItemFactory";
 
-export class ContentItemFactory {
-    public Create(context: IContext, filePath: string): ContentItem {
-        return this.AddMethods(context, filePath, {});
+let uid = 0;
+
+export class ContentItemFactory implements IContentItemFactory {
+    public create(context: IContext, filePath: string): ContentItem {
+        const item = { uid: uid++ } as ContentItem;
+        return this.addMethods(context, filePath, item);
     }
 
-    public CreateFromItem<A>(item: ContentItem, params: A): A & ContentItem {
+    public createFromItem<A>(item: ContentItem, params: A): A & ContentItem {
         const result = params as ContentItem & A;
-        this.AddMethods(item.context, item.filePath, result);
+        this.addMethods(item.context, item.filePath, result);
         return result;
     }
 
-    protected AddMethods(context: IContext, filePath: string, target: object) {
-        const result = target as ContentItem;
-        result.context = context;
-        result.filePath = filePath;
-        result.rawContent = null;
+    protected addMethods<A extends ContentItem>(context: IContext, filePath: string, target: A) {
+        target.context = context;
+        target.filePath = filePath;
+        target.rawContent = null;
 
-        result.load = () => {
-            result.rawContent = ContentItemFactory.GetContent(context, filePath);
+        target.load = () => {
+            target.rawContent = ContentItemFactory.getContent(context, filePath);
         }
 
-        result.emit = (template: string | TemplateFn, destination: string) => {
-            return ContentItemFactory.Emit(result, template, destination);
+        target.emit = (template: string | TemplateFn<A>, destination: string) => {
+            return ContentItemFactory.emit(target, template, destination);
         }
 
-        return result;
+        return target;
     }
 
-    private static Emit(item: ContentItem, template: string | TemplateFn, destination: string) {
+    private static emit(item: ContentItem, template: string | TemplateFn<ContentItem>, destination: string) {
         const context = item.context;
 
-        let w;
+        let fileContent: string;
         if (typeof template == 'string') {
             nunjucks.configure(context.cwd);
-            w = nunjucks.render(template, item);
+            fileContent = nunjucks.render(template, item);
         } else {
-            w = template(item);
+            fileContent = template(item);
         }
 
-        var d = FileUtils.evaluateParametrisedPath(destination, this);
-        d = FileUtils.getLocalPath(context, d);
+        let destinationPath = FileUtils.evaluateParametrisedPath(destination, item);
+        destinationPath = FileUtils.getLocalPath(context, destinationPath);
 
-        context.fs.mkdirs(d);
+        context.fs.mkdirs(destinationPath);
 
-        d = context.fs.joinPaths(d, 'index.html');
+        destinationPath = context.fs.joinPaths(destinationPath, 'index.html');
 
-        if (context.fs.exists(d) && FileUtils.compareFiles(context.fs.readFile(d, 'utf8'), w)) {
+        if (context.fs.exists(destinationPath) && FileUtils.compareFiles(context.fs.readFile(destinationPath, 'utf8'), fileContent)) {
             return;
         }
 
-        context.fs.writeFile(d, w);
+        context.fs.writeFile(destinationPath, fileContent);
     }
 
-    private static GetContent(context: IContext, filePath: string) {
+    private static getContent(context: IContext, filePath: string) {
         return FileUtils.loadFile(context, filePath);
     }
 }

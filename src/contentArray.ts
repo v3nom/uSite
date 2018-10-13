@@ -1,13 +1,13 @@
 import { ContentGroup } from "./ContentGroup";
-import { ContentItemFactory } from "./content/ContentItemFactory";
-import { ContentItem } from "./content/ContentItem";
+import { IContentItemFactory } from "./content/IContentItemFactory";
+import { ContentItem, TemplateFn } from "./content/ContentItem";
 import { IContext } from "./context";
 
 export class ContentArray<T extends ContentItem> {
-    constructor(private contex: IContext, private entries: T[], private contentItemFactory: ContentItemFactory) {
+    constructor(private contex: IContext, private entries: T[], private contentItemFactory: IContentItemFactory) {
     }
 
-    public emit(templ, dest) {
+    public emit(templ: string | TemplateFn<T>, dest: string) {
         this.entries.forEach((entry) => {
             entry.emit(templ, dest);
         });
@@ -15,17 +15,19 @@ export class ContentArray<T extends ContentItem> {
 
     public map<A>(mapFn: (value: T, index: number, array: T[]) => A) {
         const result = this.entries.map((value, index, arr) => {
+            this.ensureContentLoaded(value);
             let result = mapFn(value, index, arr);
             if (!result) {
-                return value;
+                throw new Error("Map call must return value");
             }
-            return this.contentItemFactory.CreateFromItem(value, result)
+            return this.contentItemFactory.createFromItem(value, result)
         });
         return new ContentArray(this.contex, result, this.contentItemFactory);
     }
 
-    public group(groupKeyFn) {
-        var groups = {};
+    public group(groupKeyFn: (item: T, index: number) => string) {
+        var groups: { [key: string]: T[] } = {};
+
         this.entries.forEach((entry, index) => {
             var k = groupKeyFn(entry, index);
             if (!groups[k]) {
@@ -33,6 +35,7 @@ export class ContentArray<T extends ContentItem> {
             }
             groups[k].push(entry)
         });
+
         return new ContentGroup(this.contex, groups);
     }
 
@@ -45,5 +48,15 @@ export class ContentArray<T extends ContentItem> {
 
     public count(): number {
         return this.entries.length;
+    }
+
+    public get(index: number): T {
+        return this.entries[index];
+    }
+
+    private ensureContentLoaded(item: T) {
+        if (!item.rawContent) {
+            item.load();
+        }
     }
 }

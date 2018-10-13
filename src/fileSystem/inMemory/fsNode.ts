@@ -72,7 +72,7 @@ export class FSNode {
         const result = this.walk(parts);
 
         if (result.remaining.length > 0) {
-            throw new Error("Path does not exist: " + p);
+            return null;
         }
 
         return result.node;

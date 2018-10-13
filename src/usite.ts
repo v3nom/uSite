@@ -1,20 +1,24 @@
 import * as glob from "glob";
 import * as FileUtils from "./utils/fileUtils";
 import { IContext } from "./context";
-import { ContentItemFactory } from './content/ContentItemFactory';
+import { IContentItemFactory } from './content/IContentItemFactory';
 import { ContentArray } from './ContentArray';
 import { parseOptionsWithSuggestedType, getSuggestedType } from './utils/metaParser';
 import { FileSystem } from './fileSystem/fileSystem';
 import { Utils } from "./utils/utils";
+import { ContentItem } from "./content/ContentItem";
+import { ContentItemFactory } from "./content/ContentItemFactory";
 
 export default class uSite {
     private _context: IContext;
+    private contentItemFactory: IContentItemFactory;
 
     constructor() {
         this._context = {
             cwd: process.cwd(),
             fs: new FileSystem,
         };
+        this.contentItemFactory = new ContentItemFactory();
     }
 
     public get context() {
@@ -31,14 +35,10 @@ export default class uSite {
         return parseOptionsWithSuggestedType(content, getSuggestedType(path, content));
     }
 
-    public parseOptions(content) {
-        return parseOptionsWithSuggestedType(content, getSuggestedType('', content));
-    }
-
-    public loadContent(pattern, contentItemFactory: ContentItemFactory) {
+    public loadContent(pattern) {
         var files = this.globSync(pattern);
-        var entries = files.map((file) => contentItemFactory.Create(this.context, FileUtils.getLocalPath(this._context, file)));
-        return new ContentArray(this.context, entries, contentItemFactory);
+        var entries = files.map((file) => this.contentItemFactory.create(this.context, FileUtils.getLocalPath(this._context, file)));
+        return new ContentArray(this.context, entries, this.contentItemFactory);
     }
 
     protected globSync(pattern: string): string[] {
