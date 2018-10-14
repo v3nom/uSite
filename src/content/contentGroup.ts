@@ -1,5 +1,5 @@
 import { IContext } from "../context";
-import { ContentItem } from "./ContentItem";
+import { ContentItem } from "./contentItem";
 
 export type GroupTemplateFn<T extends ContentItem> = (group: ContentGroup<T>) => string;
 

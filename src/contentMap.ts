@@ -1,7 +1,7 @@
 import * as nunjucks from 'nunjucks';
 import * as FileUtils from './utils/fileUtils';
 import { IContext } from './context';
-import { ContentItem } from './content/ContentItem';
+import { ContentItem } from './content/contentItem';
 import { ContentGroup, GroupTemplateFn } from './content/contentGroup';
 
 export class ContentMap<T extends ContentItem> {

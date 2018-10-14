@@ -1,12 +1,12 @@
 import * as glob from "glob";
 import * as FileUtils from "./utils/fileUtils";
 import { IContext } from "./context";
-import { IContentItemFactory } from './content/IContentItemFactory';
-import { ContentList } from './ContentList';
+import { IContentItemFactory } from './content/icontentItemFactory';
+import { ContentList } from './contentList';
 import { parseOptionsWithSuggestedType, getSuggestedType } from './utils/metaParser';
 import { FileSystem } from './fileSystem/fileSystem';
 import { Utils } from "./utils/utils";
-import { ContentItemFactory } from "./content/ContentItemFactory";
+import { ContentItemFactory } from "./content/contentItemFactory";
 
 export default class uSite {
     private _context: IContext;

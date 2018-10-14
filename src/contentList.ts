@@ -1,6 +1,6 @@
 import { ContentMap } from "./contentMap";
-import { IContentItemFactory } from "./content/IContentItemFactory";
-import { ContentItem, TemplateFn } from "./content/ContentItem";
+import { IContentItemFactory } from "./content/icontentItemFactory";
+import { ContentItem, TemplateFn } from "./content/contentItem";
 import { IContext } from "./context";
 
 export class ContentList<T extends ContentItem> {
