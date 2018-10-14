@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "removeComments": false,
+        "preserveConstEnums": true,
+        "outDir": "dist/",
+        "declaration": true,
+        "sourceMap": false
+    },
+    "typeAcquisition": {
+        "enable": true,
+    },
+    "include": [
+        "src/**/*",
+    ],
+    "exclude": [
+        "node_modules",
+        "src/**/*.spec.ts"
+    ]
+}

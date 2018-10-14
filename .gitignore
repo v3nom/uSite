@@ -39,3 +39,6 @@ demo/www
 .DS_Store
 test.js
 .vscode
+
+# Custom
+dist
