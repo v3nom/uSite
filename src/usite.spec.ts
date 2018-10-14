@@ -111,7 +111,7 @@ describe("usite test suite", () => {
     it("should support group", () => {
         const blog = setupBlog([
             { path: "content/post/1.md", content: "title1+++content1" },
-            { path: "content/post/2.md", content: "title1+++content2" },
+            { path: "content/post/2.md", content: "title2+++content2" },
             { path: "content/post/3.md", content: "title1+++content3" },
         ]);
 
@@ -125,6 +125,36 @@ describe("usite test suite", () => {
         });
 
         expect(groups.count()).toBe(2);
+
+        const someGroups = groups.filter((group) => {
+            return group.groupKey === "title1";
+        });
+
+        expect(someGroups.count()).toBe(1);
+    });
+
+    it("should support group emit", () => {
+        const blog = setupBlog([
+            { path: "content/post/1.md", content: "title1+++content1" },
+            { path: "content/post/2.md", content: "title2+++content2" },
+            { path: "content/post/3.md", content: "title1+++content3" },
+        ]);
+
+        const posts = blog.loadContent("content/post/*").map((post) => {
+            const [title, content] = post.rawContent.split("+++");
+            return { title, content };
+        });
+
+        const groups = posts.group((post, index) => {
+            return post.title;
+        });
+
+        groups.emit((group) => {
+            return `<ul>${group.entries.map(e => `<li>${e.content}</li>`).join("")}</ul>`;
+        }, "www/groups/{groupKey}");
+
+        expect(blog.context.fs.readFile(`www/groups/title1/index.html`, "utf-8")).toBe("<ul><li>content1</li><li>content3</li></ul>");
+        expect(blog.context.fs.readFile(`www/groups/title2/index.html`, "utf-8")).toBe("<ul><li>content2</li></ul>");
     });
 
     it("should expose global context", () => {

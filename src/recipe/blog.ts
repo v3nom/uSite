@@ -25,13 +25,13 @@ var posts = blog.loadContent('content/post/*').map((item) => {
 posts.emit('template/single.njk', 'www/post/{slug}');
 
 var postGroup = posts.group((post, index) => {
-    return Math.floor(index / (blog.context.global.postsPerPage || 10));
+    return Math.floor(index / (blog.context.global.postsPerPage || 10)).toString();
 });
 
 postGroup.emit('template/list.njk', 'www/posts/{groupKey}');
 
-var firstPage = postGroup.filter((groupKey) => {
-    return groupKey == 0;
+var firstPage = postGroup.filter((group) => {
+    return group.groupKey === "0";
 });
 
 blog.copy('content/images', 'www/images');
@@ -39,14 +39,14 @@ blog.copy('template/res', 'www');
 blog.copy('www/posts/0/index.html', 'www/index.html');
 
 // Generate RSS feed
-firstPage.emit((groupContext) => {
+firstPage.emit((group) => {
     var feed = new RSS.Feed();
-    feed.title = groupContext.global.title;
-    feed.description = groupContext.global.description;
-    feed.link = groupContext.global.url || '';
+    feed.title = group.context.global.title;
+    feed.description = group.context.global.description;
+    feed.link = group.context.global.url || '';
     feed.pubDate = (new Date()).toUTCString();
 
-    groupContext.entries.forEach((entry) => {
+    group.entries.forEach((entry) => {
         var item = new RSS.Item();
         item.title = entry.meta.title;
         item.description = entry.excerpt;
@@ -59,16 +59,24 @@ firstPage.emit((groupContext) => {
 }, 'www/rss.xml');
 
 // Generate sitemap
-posts.group(() => 0).emit((groupContext) => {
-    var sitemapContent = '';
-    if (groupContext.global.url) {
-        sitemapContent += groupContext.global.url + '\n';
+posts.group(() => "0").emit((group) => {
+    const sitemapContent: string[] = [];
+    const rootURL = group.context.global.url || '';
+
+    // Add index page
+    if (rootURL) {
+        sitemapContent.push(rootURL);
     }
-    Object.keys(postGroup.allGroups).forEach((k) => {
-        sitemapContent += (groupContext.global.url || '') + 'posts/' + k + '\n';
+
+    // Add links to group index pages
+    Object.keys(postGroup.groups).forEach((groupKey) => {
+        sitemapContent.push(`${rootURL}posts/${groupKey}`);
     });
-    groupContext.entries.forEach((entry) => {
-        sitemapContent += (groupContext.global.url || '') + entry.relativeUrl + '\n';
+
+    // Add direct links to articles
+    group.entries.forEach((entry) => {
+        sitemapContent.push(rootURL + entry.relativeUrl);
     });
-    return sitemapContent;
+
+    return sitemapContent.join('\n');
 }, 'www/sitemap.txt');

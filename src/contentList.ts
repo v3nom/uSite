@@ -1,9 +1,9 @@
-import { ContentGroup } from "./ContentGroup";
+import { ContentMap } from "./contentMap";
 import { IContentItemFactory } from "./content/IContentItemFactory";
 import { ContentItem, TemplateFn } from "./content/ContentItem";
 import { IContext } from "./context";
 
-export class ContentArray<T extends ContentItem> {
+export class ContentList<T extends ContentItem> {
     constructor(private contex: IContext, private entries: T[], private contentItemFactory: IContentItemFactory) {
     }
 
@@ -22,7 +22,7 @@ export class ContentArray<T extends ContentItem> {
             }
             return this.contentItemFactory.createFromItem(value, result)
         });
-        return new ContentArray(this.contex, result, this.contentItemFactory);
+        return new ContentList(this.contex, result, this.contentItemFactory);
     }
 
     public group(groupKeyFn: (item: T, index: number) => string) {
@@ -36,7 +36,7 @@ export class ContentArray<T extends ContentItem> {
             groups[k].push(entry)
         });
 
-        return new ContentGroup(this.contex, groups);
+        return new ContentMap(this.contex, groups);
     }
 
     public sort(sortFn: (a: T, b: T) => number) {

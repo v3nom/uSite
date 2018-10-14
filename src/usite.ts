@@ -2,11 +2,10 @@ import * as glob from "glob";
 import * as FileUtils from "./utils/fileUtils";
 import { IContext } from "./context";
 import { IContentItemFactory } from './content/IContentItemFactory';
-import { ContentArray } from './ContentArray';
+import { ContentList } from './ContentList';
 import { parseOptionsWithSuggestedType, getSuggestedType } from './utils/metaParser';
 import { FileSystem } from './fileSystem/fileSystem';
 import { Utils } from "./utils/utils";
-import { ContentItem } from "./content/ContentItem";
 import { ContentItemFactory } from "./content/ContentItemFactory";
 
 export default class uSite {
@@ -38,7 +37,7 @@ export default class uSite {
     public loadContent(pattern) {
         var files = this.globSync(pattern);
         var entries = files.map((file) => this.contentItemFactory.create(this.context, FileUtils.getLocalPath(this._context, file)));
-        return new ContentArray(this.context, entries, this.contentItemFactory);
+        return new ContentList(this.context, entries, this.contentItemFactory);
     }
 
     protected globSync(pattern: string): string[] {
