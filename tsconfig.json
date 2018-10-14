@@ -2,9 +2,11 @@
     "compilerOptions": {
         "target": "es6",
         "module": "commonjs",
-        "removeComments": true,
+        "removeComments": false,
         "preserveConstEnums": true,
         "outDir": "dist/",
+        "declaration": true,
+        "sourceMap": false
     },
     "typeAcquisition": {
         "enable": true,
