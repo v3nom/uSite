@@ -9,4 +9,4 @@ npm install -g usite
 - Navigate to your new folder using Terminal
 - Execute "usite init" command to get barebones website
 - Execute "npm install" to get website dependencies
-- Execute "usite generate" to get static HTML website. Execute this command each time you want to update the generated website.
+- Execute "usite generate blog" to get static HTML website. Execute this command each time you want to update the generated website.
