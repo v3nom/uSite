@@ -20,7 +20,7 @@ export class FileSystem implements IFileSystem {
         return fs.existsSync(path);
     }
 
-    public readFile(path: string, encoding: string) {
+    public readFile(path: string, encoding: "utf8") {
         return fs.readFileSync(path, encoding);
     }
 

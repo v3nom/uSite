@@ -1,6 +1,6 @@
 {
   "name": "usite",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Tiny static site generator",
   "license": "MIT",
   "author": "Tomas Grubliauskas",
@@ -16,21 +16,21 @@
     "test": "ts-node node_modules/jasmine/bin/jasmine \"src/**/*.spec.ts\""
   },
   "dependencies": {
-    "fs-extra": "8.1.0",
+    "fs-extra": "9.0.1",
     "glob": "7.1.6",
     "highlight.js": "10.4.1",
-    "js-yaml": "3.13.1",
-    "marked": "0.8.0",
-    "nunjucks": "3.2.0",
+    "js-yaml": "3.14.1",
+    "marked": "1.2.7",
+    "nunjucks": "3.2.2",
     "speakingurl": "14.0.1",
     "usitedemo": "^2.0.0"
   },
   "devDependencies": {
-    "@types/jasmine": "3.5.0",
-    "@types/node": "13.1.2",
-    "jasmine": "3.5.0",
-    "ts-node": "8.5.4",
-    "typescript": "3.7.4"
+    "@types/jasmine": "3.6.2",
+    "@types/node": "14.14.14",
+    "jasmine": "3.6.3",
+    "ts-node": "9.1.1",
+    "typescript": "4.1.3"
   },
   "keywords": [
     "static site generator",
