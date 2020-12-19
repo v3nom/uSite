@@ -36,8 +36,8 @@ if (command == 'init') {
 
     var workingDirectory = process.cwd();
 
-    fse.copySync(path.resolve(demoPath, "./content"), workingDirectory);
-    fse.copySync(path.resolve(demoPath, "./template"), workingDirectory);
-    fse.copySync(path.resolve(demoPath, "./blog.js"), workingDirectory);
-    fse.copySync(path.resolve(demoPath, "./website.json"), workingDirectory);
+    fse.copySync(path.resolve(demoPath, "./content"), path.resolve(workingDirectory, "./content"));
+    fse.copySync(path.resolve(demoPath, "./template"), path.resolve(workingDirectory, "./template"));
+    fse.copySync(path.resolve(demoPath, "./blog.js"), path.resolve(workingDirectory, "./blog.js"));
+    fse.copySync(path.resolve(demoPath, "./website.json"), path.resolve(workingDirectory, "./website.json"));
 }
