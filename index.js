@@ -24,11 +24,11 @@ if (command == 'generate') {
 if (command == 'init') {
     var fse = require('fs-extra');
     var dirPath = __dirname;
-    
+
     var demoPath = path.resolve(dirPath, './node_modules/usiteDemo/');
-    if (!fse.existsSync(demoPath)){
+    if (!fse.existsSync(demoPath)) {
         demoPath = path.resolve(dirPath, '../usiteDemo/')
-        if(!fse.existsSync(demoPath)){
+        if (!fse.existsSync(demoPath)) {
             console.error("usiteDemo dependency not found");
             return;
         }
@@ -36,5 +36,8 @@ if (command == 'init') {
 
     var workingDirectory = process.cwd();
 
-    fse.copySync(demoPath, workingDirectory);
+    fse.copySync(path.resolve(demoPath, "/content"), workingDirectory);
+    fse.copySync(path.resolve(demoPath, "/template"), workingDirectory);
+    fse.copySync(path.resolve(demoPath, "/blog.js"), workingDirectory);
+    fse.copySync(path.resolve(demoPath, "/website.json"), workingDirectory);
 }
