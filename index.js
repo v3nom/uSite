@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 var path = require('path');
+var fs = require('fs');
 
 var command = process.argv[2];
 var param = process.argv[3];
@@ -23,7 +24,16 @@ if (command == 'generate') {
 if (command == 'init') {
     var fse = require('fs-extra');
     var dirPath = __dirname;
+    
     var demoPath = path.resolve(dirPath, './node_modules/usiteDemo/');
+    if (!fse.existsSync(demoPath)){
+        demoPath = path.resolve(dirPath, '../usiteDemo/')
+        if(!fse.existsSync(demoPath)){
+            console.error("usiteDemo dependency not found");
+            return;
+        }
+    }
+
     var workingDirectory = process.cwd();
 
     fse.copySync(demoPath, workingDirectory);
