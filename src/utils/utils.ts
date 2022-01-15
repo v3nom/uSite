@@ -1,6 +1,6 @@
 import * as getSlug from 'speakingurl';
-import * as marked from 'marked';
 import * as MetaParser from './metaParser';
+import { marked } from 'marked';
 
 marked.setOptions({
     highlight: function (code) {

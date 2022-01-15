@@ -2,7 +2,7 @@ import * as yaml from 'js-yaml';
 
 function tryParseYaml(c: string) {
     try {
-        return yaml.safeLoad('---\n' + c + '...\n');
+        return yaml.load('---\n' + c + '...\n');
     } catch (e) {
         return null;
     }
