@@ -13,6 +13,7 @@
     "uSite": "./index.js"
   },
   "scripts": {
+    "build": "npx tsc",
     "test": "ts-node node_modules/jasmine/bin/jasmine \"src/**/*.spec.ts\""
   },
   "dependencies": {
