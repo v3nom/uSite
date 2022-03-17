@@ -106,6 +106,8 @@ describe("usite test suite", () => {
 
         expect(posts2.get(0).slug).toBe("post0");
         expect(posts2.get(0).title).toBe("title1");
+        expect(posts2.get(0).filePath).toBe("content/post/1.md");
+        expect(posts2.get(1).filePath).toBe("content/post/2.md");
     });
 
     it("should support group", () => {
