@@ -13,6 +13,14 @@ export class ContentList<T extends ContentItem> {
         });
     }
 
+    public filter(filterFn: (value: T, index: number) => boolean): ContentList<T> {
+        const result = this.entries.filter((value, index) => {
+            this.ensureContentLoaded(value);
+            return filterFn(value, index);
+        });
+        return new ContentList(this.contex, result, this.contentItemFactory);
+    }
+
     public map<A>(mapFn: (value: T, index: number, array: T[]) => A) {
         const result = this.entries.map((value, index, arr) => {
             this.ensureContentLoaded(value);

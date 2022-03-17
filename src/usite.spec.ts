@@ -171,6 +171,23 @@ describe("usite test suite", () => {
         expect(blog.context.fs.readFile(`www/posts/${posts.get(0).uid}/index.html`, "utf-8")).toBe("TestBlog");
         expect(blog.context.fs.readFile(`www/posts/${posts.get(1).uid}/index.html`, "utf-8")).toBe("TestBlog");
     });
+
+    it("should support filter", () => {
+        const blog = setupBlog([
+            { path: "content/post/1.md", content: "title1+++content1" },
+            { path: "content/post/2.md", content: "title2+++content2" },
+            { path: "content/post/3.md", content: "title2+++content2" },
+        ]);
+
+        const posts = blog.loadContent("content/post/*");
+        const filtered = posts.filter((post) => {
+            return post.rawContent == "title2+++content2";
+        });
+
+        expect(filtered.count()).toBe(2);
+        expect(filtered.get(0).uid).toBe(posts.get(1).uid);
+        expect(filtered.get(1).uid).toBe(posts.get(2).uid);
+    });
 });
 
 function setupBlog(files: { path: string, content: string }[]) {
