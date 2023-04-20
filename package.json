@@ -22,7 +22,7 @@
     "highlight.js": "11.4.0",
     "js-yaml": "4.1.0",
     "marked": "4.0.10",
-    "nunjucks": "3.2.3",
+    "nunjucks": "3.2.4",
     "speakingurl": "14.0.1",
     "usitedemo": "^2.0.0"
   },
