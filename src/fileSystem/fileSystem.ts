@@ -1,7 +1,7 @@
 import * as fs from 'fs';
-import * as fse from 'fs-extra';
+import fse from 'fs-extra';
 import * as path from 'path';
-import { IFileSystem } from "./ifileSystem";
+import { IFileSystem } from "./ifileSystem.js";
 
 export class FileSystem implements IFileSystem {
     public isDirectory(path: string) {

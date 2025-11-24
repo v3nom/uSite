@@ -1,18 +1,19 @@
 {
     "compilerOptions": {
-        "target": "es6",
-        "module": "commonjs",
+        "target": "ES2022",
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
         "removeComments": false,
         "preserveConstEnums": true,
         "outDir": "dist/",
         "declaration": true,
-        "sourceMap": false
-    },
-    "typeAcquisition": {
-        "enable": true,
+        "sourceMap": true,
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true
     },
     "include": [
-        "src/**/*",
+        "src/**/*"
     ],
     "exclude": [
         "node_modules",

@@ -1,8 +1,8 @@
-import * as nunjucks from 'nunjucks';
-import * as FileUtils from './utils/fileUtils';
-import { IContext } from './context';
-import { ContentItem } from './content/contentItem';
-import { ContentGroup, GroupTemplateFn } from './content/contentGroup';
+import nunjucks from 'nunjucks';
+import * as FileUtils from './utils/fileUtils.js';
+import { IContext } from './context.js';
+import { ContentItem } from './content/contentItem.js';
+import { ContentGroup, GroupTemplateFn } from './content/contentGroup.js';
 
 export class ContentMap<T extends ContentItem> {
     private _groups: { [key: string]: ContentGroup<T> };
@@ -13,7 +13,7 @@ export class ContentMap<T extends ContentItem> {
     }
 
     private createContentGroups(groups: { [key: string]: T[] }) {
-        let previousContentGroup: ContentGroup<T> = null;
+        let previousContentGroup: ContentGroup<T> | null = null;
         Object.keys(groups).forEach((groupKey) => {
             const entries = groups[groupKey];
 

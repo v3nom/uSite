@@ -1,12 +1,12 @@
 import * as path from 'path';
 
 export class FSNode {
-    private _parent: FSNode;
+    private _parent: FSNode | undefined;
     private _extension: string;
     public children: { [key: string]: FSNode };
     public name: string;
     public fileName: string;
-    public content: string;
+    public content: string = "";
 
     constructor(name: string) {
         this.children = { ".": this };
@@ -32,8 +32,10 @@ export class FSNode {
         return this._parent;
     }
 
-    public set parent(p: FSNode) {
-        this.children[".."] = p;
+    public set parent(p: FSNode | undefined) {
+        if (p) {
+            this.children[".."] = p;
+        }
         this._parent = p;
     }
 
@@ -64,9 +66,9 @@ export class FSNode {
         return lastNode;
     }
 
-    public resolvePath(p: string): FSNode {
+    public resolvePath(p: string): FSNode | null | undefined {
         if (p == "") {
-            return;
+            return undefined;
         }
         const parts = this.getPathParts(p);
         const result = this.walk(parts);
@@ -84,6 +86,9 @@ export class FSNode {
 
     private walk(parts: string[]): { node: FSNode, remaining: string[] } {
         const lastPart = parts.pop();
+        if (!lastPart) {
+            return { node: this, remaining: parts };
+        }
         const node = this.children[lastPart];
 
         if (parts.length >= 1 && node) {

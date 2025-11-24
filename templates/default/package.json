@@ -1,0 +1,12 @@
+{
+    "name": "my-usite-blog",
+    "version": "1.0.0",
+    "description": "My uSite Blog",
+    "type": "module",
+    "scripts": {
+        "generate": "usite generate blog.js"
+    },
+    "dependencies": {
+        "rss20": "^1.0.2"
+    }
+}

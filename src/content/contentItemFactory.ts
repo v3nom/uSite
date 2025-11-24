@@ -1,8 +1,8 @@
-import * as nunjucks from 'nunjucks';
-import * as FileUtils from '../utils/fileUtils';
-import { IContext } from '../context';
-import { ContentItem, TemplateFn } from "./contentItem";
-import { IContentItemFactory } from "./icontentItemFactory";
+import nunjucks from 'nunjucks';
+import * as FileUtils from '../utils/fileUtils.js';
+import { IContext } from '../context.js';
+import { ContentItem, TemplateFn } from "./contentItem.js";
+import { IContentItemFactory } from "./icontentItemFactory.js";
 
 let uid = 0;
 
@@ -28,7 +28,7 @@ export class ContentItemFactory implements IContentItemFactory {
         }
 
         target.emit = (template: string | TemplateFn<A>, destination: string) => {
-            return ContentItemFactory.emit(target, template, destination);
+            return ContentItemFactory.emit(target, template as any, destination);
         }
 
         return target;

@@ -1,0 +1,19 @@
+{% extends "template/index.njk" %}
+
+{% block content %}
+    {% for post in entries%}
+        <div class="post">
+            <h1><a href="/{{post.relativeUrl}}">{{post.meta.title}}</a></h1>
+            <div class="meta">{{post.meta.author}} | {{post.meta.date.toLocaleDateString()}}</div>
+            <div>{{post.excerpt | safe}}</div>
+        </div>
+    {% endfor %}
+    <div>
+    {% if previousGroup %}
+        <div><a href="/posts/{{previousGroup.groupKey}}">Newer posts</a></div>
+    {% endif %}
+    {% if nextGroup %}
+        <div><a href="/posts/{{nextGroup.groupKey}}">Older posts</a></div>
+    {% endif %}
+    </div>
+{% endblock %}

@@ -1,19 +1,23 @@
-import * as getSlug from 'speakingurl';
-import * as MetaParser from './metaParser';
+import getSlug from 'speakingurl';
+import * as MetaParser from './metaParser.js';
 import { marked } from 'marked';
+import { markedHighlight } from 'marked-highlight';
+import hljs from 'highlight.js';
 
-marked.setOptions({
-    highlight: function (code) {
-        return require('highlight.js').highlightAuto(code).value;
+marked.use(markedHighlight({
+    langPrefix: 'hljs language-',
+    highlight(code, lang) {
+        const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+        return hljs.highlight(code, { language }).value;
     }
-});
+}));
 
 export class Utils {
     public static parseMarkdown(content: string): string {
-        return marked(content);
+        return marked.parse(content) as string;
     }
 
-    public static parseOptions(s): any {
+    public static parseOptions(s: string): any {
         return MetaParser.parseOptionsWithSuggestedType(s, MetaParser.getSuggestedType('', s));
     }
 

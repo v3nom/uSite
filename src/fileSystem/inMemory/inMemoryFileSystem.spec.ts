@@ -1,4 +1,4 @@
-import { InMemoryFileSystem } from "./inMemoryFileSystem";
+import { InMemoryFileSystem } from "./inMemoryFileSystem.js";
 
 describe("InMemoryFileSystem spec", () => {
     it("should support mkdirs", () => {

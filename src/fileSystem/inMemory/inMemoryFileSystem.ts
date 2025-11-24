@@ -1,6 +1,6 @@
 import * as path from 'path';
-import { IFileSystem } from "../ifileSystem";
-import { FSNode } from "./fsNode";
+import { IFileSystem } from "../ifileSystem.js";
+import { FSNode } from "./fsNode.js";
 
 export class InMemoryFileSystem implements IFileSystem {
     private root: FSNode;
@@ -10,7 +10,8 @@ export class InMemoryFileSystem implements IFileSystem {
     }
 
     isDirectory(path: string): boolean {
-        return this.root.resolvePath(path).isFolder;
+        const node = this.root.resolvePath(path);
+        return node ? node.isFolder : false;
     }
 
     joinPaths(a: string, b: string): string {

@@ -1,4 +1,4 @@
-import { IFileSystem } from "./fileSystem/ifileSystem";
+import { IFileSystem } from "./fileSystem/ifileSystem.js";
 
 export interface IContext {
     cwd: string;

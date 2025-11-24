@@ -1,4 +1,4 @@
-import { FSNode } from "./fsNode"
+import { FSNode } from "./fsNode.js"
 
 describe("fsNode test suite", () => {
     it("should report file details", () => {

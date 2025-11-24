@@ -1,12 +1,12 @@
 import * as glob from "glob";
-import * as FileUtils from "./utils/fileUtils";
-import { IContext } from "./context";
-import { IContentItemFactory } from './content/icontentItemFactory';
-import { ContentList } from './contentList';
-import { parseOptionsWithSuggestedType, getSuggestedType } from './utils/metaParser';
-import { FileSystem } from './fileSystem/fileSystem';
-import { Utils } from "./utils/utils";
-import { ContentItemFactory } from "./content/contentItemFactory";
+import * as FileUtils from "./utils/fileUtils.js";
+import { IContext } from "./context.js";
+import { IContentItemFactory } from './content/icontentItemFactory.js';
+import { ContentList } from './contentList.js';
+import { parseOptionsWithSuggestedType, getSuggestedType } from './utils/metaParser.js';
+import { FileSystem } from './fileSystem/fileSystem.js';
+import { Utils } from "./utils/utils.js";
+import { ContentItemFactory } from "./content/contentItemFactory.js";
 
 export default class uSite {
     private _context: IContext;
@@ -28,13 +28,13 @@ export default class uSite {
         return Utils;
     }
 
-    public loadOptions(path) {
+    public loadOptions(path: string) {
         var p = FileUtils.getLocalPath(this._context, path);
         var content = FileUtils.loadFile(this.context, p);
         return parseOptionsWithSuggestedType(content, getSuggestedType(path, content));
     }
 
-    public loadContent(pattern) {
+    public loadContent(pattern: string) {
         var files = this.globSync(pattern);
         var entries = files.map((file) => this.contentItemFactory.create(this.context, FileUtils.getLocalPath(this._context, file)));
         return new ContentList(this.context, entries, this.contentItemFactory);

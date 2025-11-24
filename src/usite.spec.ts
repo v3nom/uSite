@@ -1,5 +1,5 @@
-import uSite from "./usite";
-import { InMemoryFileSystem } from "./fileSystem/inMemory/inMemoryFileSystem";
+import uSite from "./usite.js";
+import { InMemoryFileSystem } from "./fileSystem/inMemory/inMemoryFileSystem.js";
 
 describe("usite test suite", () => {
     it("should read global settings", () => {
@@ -46,8 +46,8 @@ describe("usite test suite", () => {
         const mappedPosts = posts.map((post) => {
             const separator = "+++";
 
-            const [meta] = post.rawContent.split(separator, 1);
-            const content = post.rawContent.replace(meta + separator, "");
+            const [meta] = post.rawContent!.split(separator, 1);
+            const content = post.rawContent!.replace(meta + separator, "");
 
             return {
                 meta: {
@@ -69,7 +69,7 @@ describe("usite test suite", () => {
         ]);
 
         const posts = blog.loadContent("content/post/*").map((post, index) => {
-            const [meta, content] = post.rawContent.split("+++");
+            const [meta, content] = post.rawContent!.split("+++");
             return { meta, content, slug: `post${index}` };
         });
 
@@ -88,7 +88,7 @@ describe("usite test suite", () => {
         ]);
 
         const posts = blog.loadContent("content/post/*").map((post, index) => {
-            const [meta, content] = post.rawContent.split("+++");
+            const [meta, content] = post.rawContent!.split("+++");
             return {
                 meta: {
                     title: meta,
@@ -118,7 +118,7 @@ describe("usite test suite", () => {
         ]);
 
         const posts = blog.loadContent("content/post/*").map((post) => {
-            const [title, content] = post.rawContent.split("+++");
+            const [title, content] = post.rawContent!.split("+++");
             return { title, content };
         });
 
@@ -143,7 +143,7 @@ describe("usite test suite", () => {
         ]);
 
         const posts = blog.loadContent("content/post/*").map((post) => {
-            const [title, content] = post.rawContent.split("+++");
+            const [title, content] = post.rawContent!.split("+++");
             return { title, content };
         });
 
@@ -213,7 +213,7 @@ function setupBlog(files: { path: string, content: string }[]) {
 }
 
 class TestUsite extends uSite {
-    public globResult: string[];
+    public globResult: string[] = [];
     protected globSync(patern: string): string[] {
         return this.globResult;
     }

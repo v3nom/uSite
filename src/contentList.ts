@@ -1,7 +1,7 @@
-import { ContentMap } from "./contentMap";
-import { IContentItemFactory } from "./content/icontentItemFactory";
-import { ContentItem, TemplateFn } from "./content/contentItem";
-import { IContext } from "./context";
+import { ContentMap } from "./contentMap.js";
+import { IContentItemFactory } from "./content/icontentItemFactory.js";
+import { ContentItem, TemplateFn } from "./content/contentItem.js";
+import { IContext } from "./context.js";
 
 export class ContentList<T extends ContentItem> {
     constructor(private contex: IContext, private entries: T[], private contentItemFactory: IContentItemFactory) {
@@ -9,7 +9,7 @@ export class ContentList<T extends ContentItem> {
 
     public emit(templ: string | TemplateFn<T>, dest: string) {
         this.entries.forEach((entry) => {
-            entry.emit(templ, dest);
+            entry.emit(templ as any, dest);
         });
     }
 

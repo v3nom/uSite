@@ -1,9 +1,9 @@
-import { Utils } from "./utils";
+import { Utils } from "./utils.js";
 
 describe("usite utils suite", () => {
     it("should parse markdown", () => {
         const content = "# Title";
-        const expectedResult = '<h1 id="title">Title</h1>\n';
+        const expectedResult = "<h1>Title</h1>\n";
         const result = Utils.parseMarkdown(content);
 
         expect(result).toBe(expectedResult);

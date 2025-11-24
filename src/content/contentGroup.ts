@@ -1,5 +1,5 @@
-import { IContext } from "../context";
-import { ContentItem } from "./contentItem";
+import { IContext } from "../context.js";
+import { ContentItem } from "./contentItem.js";
 
 export type GroupTemplateFn<T extends ContentItem> = (group: ContentGroup<T>) => string;
 

@@ -1,4 +1,4 @@
-import { IContext } from "../context";
+import { IContext } from "../context.js";
 
 export function loadFile(context: IContext, path: string) {
     var exists = context.fs.exists(path);
@@ -8,23 +8,23 @@ export function loadFile(context: IContext, path: string) {
     return context.fs.readFile(path, { encoding: 'utf-8' });
 }
 
-export function compareFiles(fileA, fileB) {
-    return fileA === fileB;
+export function compareFiles(fileA: string, fileB: string) {
+    return fileA == fileB;
 }
 
-export function getLocalPath(context: IContext, p: string) {
-    return context.fs.joinPaths(context.cwd, p);
+export function getLocalPath(context: IContext, path: string) {
+    return context.fs.joinPaths(context.cwd, path);
 }
 
-export function evaluateParametrisedPath(destination: string, entry) {
-    var parts = destination.match(/\{[a-zA-Z]*\}/g);
+export function evaluateParametrisedPath(path: string, entry: any) {
+    var parts = path.match(/\{[a-zA-Z]*\}/g);
     if (!parts) {
-        return destination;
+        return path;
     }
 
     parts.forEach((part) => {
-        destination = destination.replace(part, entry[part.replace('}', '').replace('{', '')]);
+        path = path.replace(part, entry[part.replace('}', '').replace('{', '')]);
     });
 
-    return destination;
+    return path;
 }
