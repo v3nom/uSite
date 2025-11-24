@@ -9,4 +9,5 @@ export interface ContentGroup<A extends ContentItem> {
     context: IContext,
     previousGroup?: ContentGroup<A>,
     nextGroup?: ContentGroup<A>,
+    [key: string]: unknown,
 }

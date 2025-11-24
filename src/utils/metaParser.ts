@@ -27,7 +27,7 @@ export function getSuggestedType(path: string, content: string) {
 }
 
 export function parseOptionsWithSuggestedType(content: string, suggestedType?: 'json' | "yaml") {
-    const parsers: { [key: string]: (c: string) => any } = {
+    const parsers: { [key: string]: (c: string) => unknown } = {
         json: tryParseJson,
         yaml: tryParseYaml,
     };

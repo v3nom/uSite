@@ -21,7 +21,7 @@
     "build": "tsc",
     "test": "vitest run",
     "test:watch": "vitest",
-    "lint": "eslint src/**/*.ts",
+    "lint": "eslint --no-warn-ignored src/**/*.ts",
     "format": "prettier --write \"src/**/*.{ts,js,json,md}\""
   },
   "dependencies": {

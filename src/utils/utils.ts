@@ -17,7 +17,7 @@ export class Utils {
         return marked.parse(content) as string;
     }
 
-    public static parseOptions(s: string): any {
+    public static parseOptions(s: string): unknown {
         return MetaParser.parseOptionsWithSuggestedType(s, MetaParser.getSuggestedType('', s));
     }
 

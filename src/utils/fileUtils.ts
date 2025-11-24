@@ -16,14 +16,16 @@ export function getLocalPath(context: IContext, path: string) {
     return context.fs.joinPaths(context.cwd, path);
 }
 
-export function evaluateParametrisedPath(path: string, entry: any) {
+export function evaluateParametrisedPath(path: string, entry: { [key: string]: unknown }) {
     var parts = path.match(/\{[a-zA-Z]*\}/g);
     if (!parts) {
         return path;
     }
 
     parts.forEach((part) => {
-        path = path.replace(part, entry[part.replace('}', '').replace('{', '')]);
+        const key = part.replace('}', '').replace('{', '');
+        const value = String(entry[key]);
+        path = path.replace(part, value);
     });
 
     return path;

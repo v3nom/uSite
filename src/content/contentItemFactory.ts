@@ -28,7 +28,7 @@ export class ContentItemFactory implements IContentItemFactory {
         }
 
         target.emit = (template: string | TemplateFn<A>, destination: string) => {
-            return ContentItemFactory.emit(target, template as any, destination);
+            return ContentItemFactory.emit(target, template as string | TemplateFn<ContentItem>, destination);
         }
 
         return target;
