@@ -14,24 +14,25 @@ const run = async () => {
     if (command === 'generate') {
         if (!param) {
             console.error('Filename is required when calling generate. Example: "usite generate blog"');
-            return;
+            process.exit(1);
         }
 
         const generatorPath = path.resolve(process.cwd(), param);
         if (!fs.existsSync(generatorPath)) {
             console.error(`Generator file not found: ${generatorPath}`);
-            return;
+            process.exit(1);
         }
 
         try {
             const generator = await import(generatorPath);
             if (!generator.generate) {
                 console.error("Provided generator is missing generate function");
-                return;
+                process.exit(1);
             }
             generator.generate(uSite);
         } catch (e) {
             console.error("Error loading generator:", e);
+            process.exit(1);
         }
     } else if (command === 'init') {
         const templatePath = path.resolve(__dirname, '../templates/default');
@@ -39,7 +40,7 @@ const run = async () => {
 
         if (!fs.existsSync(templatePath)) {
             console.error("Default template not found at " + templatePath);
-            return;
+            process.exit(1);
         }
 
         console.log("Initializing uSite project...");
@@ -48,6 +49,7 @@ const run = async () => {
             console.log("uSite project initialized successfully!");
         } catch (err) {
             console.error("Error initializing project:", err);
+            process.exit(1);
         }
     } else {
         console.log("Usage: usite [init|generate <file>]");
