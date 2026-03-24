@@ -1,6 +1,7 @@
 # uSite
 
 ![Tests passing](https://github.com/v3nom/usite/actions/workflows/test.yml/badge.svg)
+[![Hypercommit](https://img.shields.io/badge/Hypercommit-DB2475)](https://hypercommit.com/usite)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 **uSite** is a tiny, flexible static website generator designed for programmers.
