@@ -26,7 +26,7 @@ export class InMemoryFileSystem implements IFileSystem {
         return this.root.resolvePath(path) != null;
     }
 
-    readFile(path: string, encoding: string | { encoding: string; }) {
+    readFile(path: string, _encoding: string | { encoding: string; }) {
         const dest = this.root.resolvePath(path);
         if (!dest) {
             throw new Error("File not found");

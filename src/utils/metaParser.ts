@@ -3,7 +3,7 @@ import * as yaml from 'js-yaml';
 function tryParseYaml(c: string) {
     try {
         return yaml.load('---\n' + c + '...\n');
-    } catch (e) {
+    } catch {
         return null;
     }
 }
@@ -11,7 +11,7 @@ function tryParseYaml(c: string) {
 function tryParseJson(c: string) {
     try {
         return JSON.parse(c);
-    } catch (e) {
+    } catch {
         return null;
     }
 }
